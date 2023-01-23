@@ -1,3 +1,3 @@
-# Motorola_Project
+# Arkanoid
 
 just read me :>
