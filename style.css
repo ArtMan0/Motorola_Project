@@ -1,5 +1,5 @@
 body{
-    /*background-color: #000000;*/
+    background-color: #2f2d2d;
     color: #ffffff;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 12px;
@@ -17,10 +17,9 @@ canvas{
 #gameRoot{
     border: 2px solid red;
 }
-#hp{
+#gameVars{
     position: fixed;
     top: 0;
     left: 0;
     color: red;
-    font-family: Arial, Helvetica, sans-serif;
 }

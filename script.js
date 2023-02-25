@@ -4,7 +4,9 @@ ctx = canvas.getContext("2d")
 canvas.width = 600
 canvas.height = 600
 
-let hp = 3;
+let hp = 3
+let level = 1
+let points = 0
 
 // add move platform by keyboard
 let platform = {
@@ -74,17 +76,97 @@ canvas.addEventListener("click", function(event) {
     ball.canMove = true
 })
 
+let bricks = {
+    "white": 50,
+    "orange": 60,
+    "aqua": 70,
+    "green": 80,
+    "red": 90,
+    "blue": 100,
+    "pink": 110,
+    "yellow": 120,
+}
+
+let stage = {
+    bricksNumber: level,
+    brickHeight: 100,
+    brickWidth: canvas.width / (level/3),
+    bricks: [],
+    setBricks: function() {
+        for (let i = 0; i < this.bricksNumber; i++){
+            const keys = Object.keys(bricks);
+            const randomKey = keys[Math.floor(Math.random() * keys.length)];
+            let brickX;
+            let brickY;
+            if(i < level/3) {
+                brickX = this.brickWidth * i
+                brickY = 0
+            } else if (i < level/3*2) {
+                brickX = this.brickWidth * (i - level/3)
+                brickY = this.brickHeight
+            } else {
+                brickX = this.brickWidth * (i - level/3*2)
+                brickY = this.brickHeight*2
+            }
+            this.bricks.push({
+                x: brickX,
+                y: brickY,
+                color: randomKey
+            })
+        }
+    },
+    draw: function() {
+        for (let i = 0; i < this.bricks.length; i++) {
+            ctx.fillStyle = this.bricks[i].color
+            ctx.fillRect(this.bricks[i].x, this.bricks[i].y, this.brickWidth, this.brickHeight)
+        }
+    },
+    brickCollision: function() {
+        for (let i = 0; i < this.bricks.length; i++) {
+            if (ball.y + ball.changeY > this.bricks[i].y && ball.y + ball.changeY < this.bricks[i].y + this.brickHeight && (ball.x < this.bricks[i].x + this.brickWidth && ball.x > this.bricks[i].x ) ) {
+                ball.changeY = -ball.changeY
+                points += bricks[this.bricks[i].color]
+                this.bricks.splice(i, 1)
+                if(this.bricks.length == 0) {
+                    level++
+                    this.bricksNumber = level
+                    this.brickWidth = canvas.width / (level/3)
+                    this.bricks = []
+                    this.setBricks()
+                }
+            }
+            if (ball.x + ball.changeX > this.bricks[i].x && ball.x + ball.changeX < this.bricks[i].x + this.brickWidth && (ball.y < this.bricks[i].y + this.brickHeight && ball.y > this.bricks[i].y )){
+                ball.changeX = -ball.changeX
+                this.bricks.splice(i, 1)
+                if(this.bricks.length == 0) {
+                    level++
+                    this.bricksNumber = level
+                    this.brickWidth = canvas.width / (level/3)
+                    this.bricks = []
+                    this.setBricks()
+                }
+            }
+        }
+    }
+}
+stage.setBricks()
+
 let draw = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     platform.draw()
     ball.draw()
+    stage.draw()
+
     document.getElementById("hp").innerHTML = "HP: " + hp
+    document.getElementById("level").innerHTML = "Poziom: " + level
+    document.getElementById("score").innerHTML = "Punkty: " + points
 }
 let update = () => {
     ball.move()
     ball.wallCollision()
     ball.platformCollision()
     ball.floorCollision()
+    stage.brickCollision()
 }
 
 let updateInterval = setInterval(update, 15)
