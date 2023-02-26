@@ -8,6 +8,7 @@ body{
     width: 100vw;
     height: 100vh;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
@@ -22,4 +23,17 @@ canvas{
     top: 0;
     left: 0;
     color: red;
+}
+button{
+    padding: 10px;
+    border: 6px solid #5d1818;
+    border-radius: 10px;
+    background-color: orange;
+    font-size: 20px;
+    cursor: pointer;
+    transition-duration: 0.4s;
+}
+button:hover{
+    background-color: #5d1818;
+    color: #ffffff;
 }

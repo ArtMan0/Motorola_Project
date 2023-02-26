@@ -11,9 +11,9 @@ let points = 0
 // add move platform by keyboard
 let platform = {
     x: 0,
-    y: 550,
+    y: 580,
     width: canvas.width * 0.25,
-    height: 25,
+    height: 15,
     color: "red",
     draw: function() {
         ctx.fillStyle = this.color
@@ -49,9 +49,9 @@ let ball = {
         }
     },
     platformCollision: function() {
-        if (this.y + this.changeY > platform.y && this.x + this.changeX > platform.x && this.x + this.changeX < platform.x + platform.width) {
-            this.changeY = -this.changeY
+        if (this.y + this.changeY > platform.y && this.y + this.changeY < platform.y + this.changeY+1 && this.x + this.changeX > platform.x && this.x + this.changeX < platform.x + platform.width) {
             this.changeX = (this.x - (platform.x + platform.width / 2)) / 10
+            this.changeY = (Math.sqrt((50+level)-this.changeX*this.changeX)) * -1 // pitagoras
         }
     },
     move: function() {
@@ -60,14 +60,17 @@ let ball = {
             this.y = this.y + this.changeY
         }
     },
+    resetBall: function() {
+        this.x = canvas.width / 2
+        this.y = 500
+        this.canMove = false
+        this.changeX = -5
+        this.changeY = -5
+    },
     floorCollision: function() {
         if (this.y + this.changeY > canvas.height) {
-            this.x = canvas.width / 2
-            this.y = 500
-            this.canMove = false
+            this.resetBall()
             hp--
-            this.changeX = -5
-            this.changeY = -5
         }
     }
 }
@@ -133,6 +136,7 @@ let stage = {
                     this.brickWidth = canvas.width / (level/3)
                     this.bricks = []
                     this.setBricks()
+                    ball.resetBall()
                 }
             }
             if (ball.x + ball.changeX > this.bricks[i].x && ball.x + ball.changeX < this.bricks[i].x + this.brickWidth && (ball.y < this.bricks[i].y + this.brickHeight && ball.y > this.bricks[i].y )){
@@ -144,12 +148,25 @@ let stage = {
                     this.brickWidth = canvas.width / (level/3)
                     this.bricks = []
                     this.setBricks()
+                    ball.resetBall()
                 }
             }
         }
     }
 }
 stage.setBricks()
+
+function checkHp(){
+    if(hp < 0) {
+        if(localStorage.getItem("highscore") == undefined){
+            localStorage.setItem("highscore", points)
+        }else if(localStorage.getItem("highscore") < points){
+            localStorage.setItem("highscore", points)
+        }
+        localStorage.setItem("lastscore", points)
+        window.location.href = "gg.html"
+    }
+}
 
 let draw = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
@@ -167,6 +184,7 @@ let update = () => {
     ball.platformCollision()
     ball.floorCollision()
     stage.brickCollision()
+    checkHp()
 }
 
 let updateInterval = setInterval(update, 15)
