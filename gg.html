@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Koniec gry</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Koniec gry</h1><br>
+    <h2 id="points">Twój wynik to: </h2><br>
+    <h2 id="record">Twój rekord to: </h2><br>
+    <a href="index.html"><button id="restart">Zagraj ponownie</button></a>
+
+    <script>
+        document.getElementById("points").innerHTML = `Twój wynik to: <span style="color: red;">${localStorage.getItem('lastscore')}</span>`
+        document.getElementById("record").innerHTML = `Twój rekord to: <span style="color: aquamarine;">${localStorage.getItem('highscore')}</span>`
+
+    </script>
+</body>
+</html>
