@@ -23,14 +23,15 @@ let platform = {
 canvas.addEventListener("mousemove", function(event) {
     let rect = canvas.getBoundingClientRect();
     let x = (event.clientX - rect.left) / (rect.right - rect.left) * canvas.width;
-    platform.x = x - platform.width / 2
+    if(x > (platform.width/2)-10 && x < (canvas.width-platform.width/2)+10) 
+        platform.x = x - platform.width / 2
 })
 
 // add move ball to platform (x) before click
 let ball = {
     x: canvas.width / 2,
     y: 500,
-    changeX: -5,
+    changeX: 1,
     changeY: -5,
     color: "blue",
     canMove: false,
@@ -64,7 +65,7 @@ let ball = {
         this.x = canvas.width / 2
         this.y = 500
         this.canMove = false
-        this.changeX = -5
+        this.changeX = Math.floor(Math.random()*10)
         this.changeY = -5
     },
     floorCollision: function() {
