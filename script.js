@@ -8,7 +8,6 @@ let hp = 3
 let level = 1
 let points = 0
 
-// add move platform by keyboard
 let platform = {
     x: 0,
     y: 580,
@@ -21,12 +20,11 @@ let platform = {
     }
 }
 canvas.addEventListener("mousemove", function(event) {
-    let rect = canvas.getBoundingClientRect();
-    let x = (event.clientX - rect.left) / (rect.right - rect.left) * canvas.width;
+    let rect = canvas.getBoundingClientRect()
+    let x = (event.clientX - rect.left) / (rect.right - rect.left) * canvas.width
     platform.x = x - platform.width / 2
 })
 
-// add move ball to platform (x) before click
 let ball = {
     x: canvas.width / 2,
     y: 500,
@@ -97,10 +95,10 @@ let stage = {
     bricks: [],
     setBricks: function() {
         for (let i = 0; i < this.bricksNumber; i++){
-            const keys = Object.keys(bricks);
-            const randomKey = keys[Math.floor(Math.random() * keys.length)];
-            let brickX;
-            let brickY;
+            const keys = Object.keys(bricks)
+            const randomKey = keys[Math.floor(Math.random() * keys.length)]
+            let brickX
+            let brickY
             if(i < level/3) {
                 brickX = this.brickWidth * i
                 brickY = 0
@@ -157,12 +155,14 @@ let stage = {
 stage.setBricks()
 
 function checkHp(){
-    if(hp < 0) {
+    if(hp <= 0) {
         if(localStorage.getItem("highscore") == undefined){
             localStorage.setItem("highscore", points)
         }else if(localStorage.getItem("highscore") < points){
             localStorage.setItem("highscore", points)
         }
+        clearInterval(updateInterval)
+        clearInterval(drawInterval)
         localStorage.setItem("lastscore", points)
         window.location.href = "gg.html"
     }
