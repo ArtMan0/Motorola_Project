@@ -1,5 +1,5 @@
 # Arkanoid
-#### Szymon Przeździęk, Artur Mandziuk, Patryk Sobczuk, Mikołaj Bednarski, Żenia Szczerbyna
+#### Szymon Przeździęk, Artur Mandziuk, Patryk Sobczuk, Mikołaj Bednarski, Yevhenii Shcherbyna
 
 Aby uruchmoić grę należy pobrać repozytorium i uruchomić plik `index.html` w przeglądarce.
 
